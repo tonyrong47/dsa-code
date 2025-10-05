@@ -1,0 +1,83 @@
+#include <iostream>
+
+using namespace std;
+
+int R;
+int C;
+
+int dx[] = {-1,0,1,0};
+int dy[] = {0,-1,0,1};
+
+void floodFill_Algo(char matrix[][50], int i, int j, char ch, char color)
+{
+    if(i<0 || i > R || j < 0 || j > C)
+    {
+        return;
+    }
+
+    if(matrix[i][j] != ch)
+    {
+        return;
+    }
+
+    matrix[i][j] = color;
+    
+    for(int k = 0; k < 4; k++)
+    {
+        floodFill_Algo(matrix,i+dx[k],j+dy[k],ch,color);
+    }
+    
+    cout << endl;
+
+}
+
+
+
+void printThe2DMatrix(char matrix[][50])
+{
+    for(int i = 0; i < R; i++)
+    {
+        cout << endl;
+        for(int j = 0; j < C; j++)
+        {
+            cout << matrix[i][j];
+        }
+        
+    }
+}
+
+
+
+int main()
+{
+    char input[15][50];
+    
+    cout << "Enter the number of rows: ";
+    cin >> R;
+    
+    cout << "Enter the number of columns: ";
+    cin >> C;
+    
+    for(int i = 0; i < R; i++)
+    {
+        for(int j = 0; j < C; j++)
+        {
+            cin >> input[i][j];
+        }
+    }
+    
+    
+    
+    printThe2DMatrix(input);
+    
+    floodFill_Algo(input,7,13,'.','A');
+
+    floodFill_Algo(input,0,0,'.','X');
+    
+    floodFill_Algo(input,3,16,'.','W');
+    printThe2DMatrix(input);
+
+
+    return 0;
+}
+

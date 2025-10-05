@@ -1,0 +1,58 @@
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+const INF = int(1e9)
+
+var N int
+var dist [][]int
+var dp [][]int
+
+// tsp(mask, pos) -> minimum cost to visit all cities starting from "pos" with visited = mask
+func tsp(mask, pos int) int {
+	if mask == (1<<N)-1 { // all cities visited
+		return dist[pos][0] // return to starting city
+	}
+
+	if dp[mask][pos] != -1 {
+		return dp[mask][pos]
+	}
+
+	ans := INF
+	for city := 0; city < N; city++ {
+		if (mask&(1<<city)) == 0 { // if not visited
+			newAns := dist[pos][city] + tsp(mask|(1<<city), city)
+			if newAns < ans {
+				ans = newAns
+			}
+		}
+	}
+	dp[mask][pos] = ans
+	return ans
+}
+
+func main() {
+	// Example graph: 4 cities
+	N = 4
+	dist = [][]int{
+		{0, 20, 42, 25},
+		{20, 0, 30, 34},
+		{42, 30, 0, 10},
+		{25, 34, 10, 0},
+	}
+
+	// Initialize dp with -1
+	dp = make([][]int, 1<<N)
+	for i := range dp {
+		dp[i] = make([]int, N)
+		for j := range dp[i] {
+			dp[i][j] = -1
+		}
+	}
+
+	result := tsp(1, 0) // start at city 0 with mask = 0001
+	fmt.Println("Minimum TSP cost:", result)
+}
