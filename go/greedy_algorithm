@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Activity {
+    int start, finish;
+};
+
+// Comparator to sort activities by finish time
+bool cmp(Activity a, Activity b) {
+    return a.finish < b.finish;
+}
+
+int main() {
+    int n;
+    cout << "Enter number of activities: ";
+    cin >> n;
+
+    vector<Activity> arr(n);
+    cout << "Enter start and finish times:\n";
+    for(int i = 0; i < n; i++) {
+        cin >> arr[i].start >> arr[i].finish;
+    }
+
+    // Sort by finish time
+    sort(arr.begin(), arr.end(), cmp);
+
+    cout << "Selected activities: ";
+    int lastFinish = -1;
+    for(int i = 0; i < n; i++) {
+        if(arr[i].start >= lastFinish) {
+            cout << "(" << arr[i].start << "," << arr[i].finish << ") ";
+            lastFinish = arr[i].finish;
+        }
+    }
+    cout << endl;
+    return 0;
+}
